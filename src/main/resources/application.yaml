@@ -12,3 +12,18 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+
+user1:
+  name: ${user1Name}
+  pass: ${user1Pass}
+  role: ${user1Role}
+
+user2:
+  name: ${user2Name}
+  pass: ${user2Pass}
+  role: ${user2Role}
+
+user3:
+  name: ${user3Name}
+  pass: ${user3Pass}
+  role: ${user3Role}

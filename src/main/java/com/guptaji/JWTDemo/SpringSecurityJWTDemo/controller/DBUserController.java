@@ -3,6 +3,7 @@ package com.guptaji.JWTDemo.SpringSecurityJWTDemo.controller;
 import com.guptaji.JWTDemo.SpringSecurityJWTDemo.entiry.UserSecurityInfo;
 import com.guptaji.JWTDemo.SpringSecurityJWTDemo.service.UserSecurityService;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,5 +33,11 @@ public class DBUserController {
     LOG.info("Hit getUser from DB API");
     List<UserSecurityInfo> userSecurityInfo = userSecurityService.fetchAllUsers();
     return new ResponseEntity<>(userSecurityInfo, HttpStatus.OK);
+  }
+
+  @GetMapping("/getCurrentUser")
+  public ResponseEntity<?> getCurrentActiveUser(Principal principal) {
+    LOG.info("Fetching the current user");
+    return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
   }
 }
