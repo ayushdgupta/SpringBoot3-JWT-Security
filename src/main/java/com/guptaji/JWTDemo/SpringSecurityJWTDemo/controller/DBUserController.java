@@ -13,6 +13,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +28,8 @@ public class DBUserController {
   @Autowired public UserSecurityService userSecurityService;
 
   @Autowired public JwtService jwtService;
+
+  @Autowired public AuthenticationManager authenticationManager;
 
   @PostMapping("/createNewUser")
   public ResponseEntity<?> createUser(@RequestBody UserSecurityInfo userSecurityInfo) {
@@ -47,7 +53,16 @@ public class DBUserController {
 
   @GetMapping("/getJwtToken")
   public ResponseEntity<?> getJwtToken(@RequestBody AuthRequest authRequest) {
-    LOG.info("Fetching the Jwt token for {}", authRequest.getUserName());
-    return new ResponseEntity<>(jwtService.generateToken(authRequest.getUserName()), HttpStatus.OK);
+    Authentication authenticate =
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                authRequest.getUserName(), authRequest.getPassword()));
+    if (authenticate.isAuthenticated()) {
+      LOG.info("Fetching the Jwt token for {}", authRequest.getUserName());
+      return new ResponseEntity<>(
+          jwtService.generateToken(authRequest.getUserName()), HttpStatus.OK);
+    } else {
+      throw new BadCredentialsException("either userName or password is not correct plz check");
+    }
   }
 }
