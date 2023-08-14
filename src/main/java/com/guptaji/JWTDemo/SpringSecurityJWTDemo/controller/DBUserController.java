@@ -1,6 +1,8 @@
 package com.guptaji.JWTDemo.SpringSecurityJWTDemo.controller;
 
+import com.guptaji.JWTDemo.SpringSecurityJWTDemo.dto.AuthRequest;
 import com.guptaji.JWTDemo.SpringSecurityJWTDemo.entiry.UserSecurityInfo;
+import com.guptaji.JWTDemo.SpringSecurityJWTDemo.service.JwtService;
 import com.guptaji.JWTDemo.SpringSecurityJWTDemo.service.UserSecurityService;
 
 import java.security.Principal;
@@ -21,6 +23,8 @@ public class DBUserController {
 
   @Autowired public UserSecurityService userSecurityService;
 
+  @Autowired public JwtService jwtService;
+
   @PostMapping("/createNewUser")
   public ResponseEntity<?> createUser(@RequestBody UserSecurityInfo userSecurityInfo) {
     LOG.info("Hit create user in DB API");
@@ -39,5 +43,11 @@ public class DBUserController {
   public ResponseEntity<?> getCurrentActiveUser(Principal principal) {
     LOG.info("Fetching the current user");
     return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
+  }
+
+  @GetMapping("/getJwtToken")
+  public ResponseEntity<?> getJwtToken(@RequestBody AuthRequest authRequest) {
+    LOG.info("Fetching the Jwt token for {}", authRequest.getUserName());
+    return new ResponseEntity<>(jwtService.generateToken(authRequest.getUserName()), HttpStatus.OK);
   }
 }

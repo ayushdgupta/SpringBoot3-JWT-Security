@@ -48,10 +48,16 @@ public class SecurityConfig {
     httpSecurity
         .csrf(
             httpSecurityCsrfConfigurer ->
-                httpSecurityCsrfConfigurer.ignoringRequestMatchers("/DbUserHandling/createNewUser"))
+                httpSecurityCsrfConfigurer.ignoringRequestMatchers(
+                    "/DbUserHandling/createNewUser", "/DbUserHandling/getJwtToken"))
         .authorizeHttpRequests(
-            authorizeHttpRequest -> authorizeHttpRequest.anyRequest().authenticated())
-        .formLogin(Customizer.withDefaults());
+            authorizeHttpRequest ->
+                authorizeHttpRequest
+                    .requestMatchers("/DbUserHandling/getJwtToken")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .httpBasic(Customizer.withDefaults());
     return httpSecurity.build();
   }
 

@@ -27,3 +27,5 @@ user3:
   name: ${user3Name}
   pass: ${user3Pass}
   role: ${user3Role}
+
+mySecret: ${secretKey}
