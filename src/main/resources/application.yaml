@@ -12,7 +12,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-
+  main:
+    allow-circular-references: true
 user1:
   name: ${user1Name}
   pass: ${user1Pass}
