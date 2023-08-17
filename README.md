@@ -123,5 +123,12 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
     **.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);**.
 16. Here we disabled the cors, our origin can be anything but if we want to restrict the origin then we need to
     do some config changes I don't know them now may be in future we will see.
+17. After the implementation of JWT if we are getting an exception related to cyclic dependency then we nned to
+    specify below property in application.yaml file -
+```yaml
+spring:
+  main:
+    allow-circular-references: true
+```
    
 
