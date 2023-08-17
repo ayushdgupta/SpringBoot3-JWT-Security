@@ -27,6 +27,9 @@ public class JwtService {
 
   public String generateToken(String userName) {
     LOG.info("Generating the JWT Token for {}", userName);
+    // right now we are sending empty claims map, but we can put any values inside it according to
+    // our need like IPAddress of the origin or maybe any other field which will be reflected in
+    // payload section of token. Every section of token is called claims.
     Map<String, Object> claims = new HashMap<>();
     String token = createJwtToken(claims, userName);
     LOG.info("JWT Token {}", token);
